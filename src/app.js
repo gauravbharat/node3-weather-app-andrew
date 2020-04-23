@@ -7,6 +7,9 @@ const forecast = require('./utils/forecast');
 const lc = require('./utils/logcolors');
 
 const app = express();
+const port = process.env.PORT || 3000;
+const IP = process.env.IP || 'localhost';
+
 const publicDirPath = path.join(__dirname, '../public');
 const viewsPath = path.join(__dirname, '../templates/views');
 const partialsPath = path.join(__dirname, '../templates/partials');
@@ -108,6 +111,6 @@ app.get('*', (req, res) => {
   res.render('404', {error: 'Page not found.'});
 });
 
-app.listen(3000, 'localhost', err => {
-  console.log('Server is up on port 3000');
+app.listen(port, IP, err => {
+  console.log(`Server is up on port ${port} and IP ${IP}...`);
 });
