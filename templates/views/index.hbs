@@ -1,0 +1,29 @@
+{{>header}}
+  
+  
+  <p>Use this site to get your weather!</p>
+
+  <form>
+    <input type="text" placeholder="Location">
+    <button>Search</button>
+  </form>
+
+  <div class="forecast">
+    {{!-- <div class="forecast__data">
+      <div class="forecast__data--1">
+        <img class="forecast__data__img" src="http:\/\/cdn.worldweatheronline.com\/images\/wsymbols01_png_64\/wsymbol_0002_sunny_intervals.png" alt="Icon">
+        <p class="forecast__data__location">Boston, Massachusetts, United States</p>
+      </div>
+      <p class="forecast__data__info">Partly cloudy. Today's temperature is 2&#176C, though feels like -5&#176C.</p>
+    </div> --}}
+    {{!-- <div class="forecast__error">
+      <p>Unable to connect to location services!
+        Code: ENOTFOUND
+        Error: undefined</p>
+    </div> --}}
+  </div>
+
+  <script src="./js/app.js" ></script>
+
+  
+{{>footer}}
