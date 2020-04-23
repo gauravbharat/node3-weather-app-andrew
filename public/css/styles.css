@@ -89,3 +89,27 @@ form button {
   color: #fff;
   background-color: rgb(230, 23, 23);
 }
+
+.row {
+  text-align: justify;
+  margin-top: 30px;
+}
+
+.row h2 { margin-bottom: 10px; }
+.row p {
+  margin-top: 10px;
+}
+
+.row a {
+  text-decoration: none;
+}
+
+.row a:link,
+.row a:visited {
+  color: #888888;
+}
+
+.row a:hover,
+.row a:active {
+  color: #ccc;
+}

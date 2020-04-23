@@ -35,7 +35,7 @@ app.get('', (req, res) => {
     {
       title: 'Weather App',
       header: 'Weather',
-      name: 'Gaurav Mendse'
+      name: 'Gaurav Mendse | Andrew Mead | Complete Nodejs Developer Course | Udemy'
     }
   );
 });
@@ -46,7 +46,7 @@ app.get('/about', (req, res) => {
     {
       title: 'About Me',
       header: 'About Me',
-      name: 'Gaurav Mendse'
+      name: 'Gaurav Mendse | Andrew Mead | Complete Nodejs Developer Course | Udemy'
     }
   );
 });
@@ -57,8 +57,8 @@ app.get('/help', (req, res) => {
     {
       title: 'Help available',
       header: 'Help',
-      name: 'System Admin',
-      text: 'This is some helpful text'
+      name: 'Gaurav Mendse | Andrew Mead | Complete Nodejs Developer Course | Udemy'
+      // text: 'Happy to help!'
     }
   );
 });
