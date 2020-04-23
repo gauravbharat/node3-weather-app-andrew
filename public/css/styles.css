@@ -36,8 +36,9 @@ header a {
   text-decoration: none;
 }
 
-.portrait {
-  width: 250px;
+.about--portrait {
+  height: 100px;
+  border-radius: 50%;
 }
 
 form input {
@@ -61,7 +62,8 @@ form button {
   border-radius: 5px;
 }
 
-.forecast__data--1 {
+.forecast__data--1,
+.about {
   display: flex;
   flex-direction: row;
 }
@@ -70,9 +72,11 @@ form button {
   height: 40px;
 }
 
-.forecast__data__location {
+.forecast__data__location,
+.about--text {
   padding-left: 10px;
   letter-spacing: 1px;
+  text-align: justify;
 }
 
 .forecast__data__info {

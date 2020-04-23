@@ -55,7 +55,7 @@ weatherForm.addEventListener('submit', (e) => {
               <img class="forecast__data__img" src="${record.forecast.weather_icons}" alt="Icon">
               <p class="forecast__data__location">${record.location}</p>
             </div>
-            <p class="forecast__data__info">${record.forecast.weather_descriptions}. Today's temperature is ${record.forecast.temperature}&#176C, though feels like ${record.forecast.feelslike}&#176C.</p>
+            <p class="forecast__data__info">${record.forecast.weather_descriptions}. Today's temperature is ${record.forecast.temperature}&#176C, though feels like ${(record.forecast.temperature === record.forecast.feelslike) ? 'the same' : record.forecast.feelslike + '&#176C'}.</p>
           </div>
 
         `;
