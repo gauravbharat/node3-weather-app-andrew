@@ -70,6 +70,7 @@ form button {
 
 .forecast__data__img {
   height: 40px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
 }
 
 .forecast__data__location,
@@ -81,6 +82,7 @@ form button {
 
 .forecast__data__info {
   margin: 5px auto;
+  text-align: justify;
 }
 
 .forecast__error {

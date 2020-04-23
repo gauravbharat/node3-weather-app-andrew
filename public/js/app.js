@@ -55,9 +55,8 @@ weatherForm.addEventListener('submit', (e) => {
               <img class="forecast__data__img" src="${record.forecast.weather_icons}" alt="Icon">
               <p class="forecast__data__location">${record.location}</p>
             </div>
-            <p class="forecast__data__info">${record.forecast.weather_descriptions}. Today's temperature is ${record.forecast.temperature}&#176C, though feels like ${(record.forecast.temperature === record.forecast.feelslike) ? 'the same' : record.forecast.feelslike + '&#176C'}.</p>
+            <p class="forecast__data__info">${record.forecast.weather_descriptions}. Today's temperature is <strong>${record.forecast.temperature}&#176C</strong>, though feels like ${(record.forecast.temperature === record.forecast.feelslike) ? 'the same' : record.forecast.feelslike + '&#176C'}. The humidity is ${record.forecast.humidity}%, cloud cover of ${record.forecast.cloudcover}%, wind speed at ${record.forecast.wind_speed} kilometers/hr and a visibility level of ${record.forecast.visibility} kilometers.</p>
           </div>
-
         `;
         });
         div.innerHTML = showHTML;

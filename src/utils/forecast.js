@@ -33,7 +33,11 @@ const forecast = ({latitude, longitude} = {}, callback) => {
         weather_descriptions: response.body.current.weather_descriptions[0],
         temperature: response.body.current.temperature,
         feelslike: response.body.current.feelslike,
-        weather_icons: response.body.current.weather_icons[0]
+        weather_icons: response.body.current.weather_icons[0],
+        humidity: response.body.current.humidity,
+        cloudcover: response.body.current.cloudcover,
+        wind_speed: response.body.current.wind_speed,
+        visibility: response.body.current.visibility
       });
     } 
   });  

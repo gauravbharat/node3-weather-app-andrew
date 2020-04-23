@@ -95,7 +95,11 @@ app.get('/weather', (req, res) => {
           weather_descriptions: forecastData.weather_descriptions,
           temperature: forecastData.temperature,
           feelslike: forecastData.feelslike,
-          weather_icons: forecastData.weather_icons
+          weather_icons: forecastData.weather_icons,
+          humidity: forecastData.humidity,
+          cloudcover: forecastData.cloudcover,
+          wind_speed: forecastData.wind_speed,
+          visibility: forecastData.visibility
         },  
         address
       }]);
