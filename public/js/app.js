@@ -36,7 +36,7 @@ weatherForm.addEventListener('submit', (e) => {
   button.textContent = 'Loading...';
   button.disabled = true;
 
-  fetch(`/weather?address=${location}`).then(res => {
+  fetch(`/weather?address=${location}&limit=${(window.location.pathname === '/more-weather') ? 10 : 1}`).then(res => {
     res.json().then(data => {
       if(data.error) {
         // console.log(data.error);
@@ -48,7 +48,7 @@ weatherForm.addEventListener('submit', (e) => {
         div.innerHTML = showHTML;
       } else {
         let showHTML = '';
-        data.forEach(record => {
+        data.weather_data.forEach(record => {
           showHTML += `
           <div class="forecast__data">
             <div class="forecast__data--1">
@@ -59,6 +59,9 @@ weatherForm.addEventListener('submit', (e) => {
           </div>
         `;
         });
+        showHTML += `
+        <p class='attribution'>${data.attribution}</p>
+        `;
         div.innerHTML = showHTML;
 
         // console.log(data[0].location);

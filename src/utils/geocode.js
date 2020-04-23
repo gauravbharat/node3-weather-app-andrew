@@ -33,12 +33,23 @@ const geocode = (address, limit, callback) => {
 
     // Success
     } else {
-      callback(undefined, {
-        latitude: response.body.features[0].center[1],
-        longitude: response.body.features[0].center[0],
-        location: response.body.features[0].place_name,
-        attribution: response.body.attribution
+
+      let attribution = response.body.attribution;
+
+      let returnData = {
+        attribution,
+        forecast: []
+      };
+      
+      response.body.features.forEach( record => {
+        returnData.forecast.push({
+          latitude: record.center[1],
+          longitude: record.center[0],
+          location: record.place_name
+        });
       });
+
+      callback(undefined, returnData);
     }
   });
 };

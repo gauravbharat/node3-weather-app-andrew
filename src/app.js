@@ -70,8 +70,11 @@ app.get('/weather', (req, res) => {
       error: 'You must provide an address'
     });
   }
+
   const address = req.query.address;
-  const recordLimit = (req.query.limit) ? (req.query.limit) : 1;
+  const recordLimit = (req.query.limit) ? req.query.limit : 1;
+
+  console.log('address', address);
 
   geocode(address, recordLimit, (error, data) => {
     if(error) { 
@@ -79,33 +82,88 @@ app.get('/weather', (req, res) => {
       return res.send({ error }); 
     }
     
-    forecast(data, (error, forecastData) => {
-      if(error) { 
-        console.log(error);
-        return res.send({ error });  
-      }
-      // console.log(data);
-      // console.log(forecastData);
+    // console.log('mapbox data', data);
 
-      // console.log(lc.successColorBG(data.location));
-      // console.log(lc.successColor(`${forecastData.weather_descriptions}. Today's temperature is ${forecastData.temperature}, though feels like ${forecastData.feelslike}.`));
+    let returnData = {
+      attribution: data.attribution,
+      address,
+      weather_data: []
+    };
 
-      res.send ([{
-        location: data.location,
-        forecast: {
-          weather_descriptions: forecastData.weather_descriptions,
-          temperature: forecastData.temperature,
-          feelslike: forecastData.feelslike,
-          weather_icons: forecastData.weather_icons,
-          humidity: forecastData.humidity,
-          cloudcover: forecastData.cloudcover,
-          wind_speed: forecastData.wind_speed,
-          visibility: forecastData.visibility
-        },  
-        address
-      }]);
+    // console.log('data.forecast.length', data.forecast.length);
+
+    data.forecast.forEach((record, index) => {
+      forecast(record, (error, forecastData) => {
+        if(error) { 
+          console.log(error);
+          return res.send({ error });  
+        }
+
+        returnData.weather_data.push({
+          location: record.location,
+          forecast: {
+            weather_descriptions: forecastData.weather_descriptions,
+            temperature: forecastData.temperature,
+            feelslike: forecastData.feelslike,
+            weather_icons: forecastData.weather_icons,
+            humidity: forecastData.humidity,
+            cloudcover: forecastData.cloudcover,
+            wind_speed: forecastData.wind_speed,
+            visibility: forecastData.visibility
+          }
+        });
+
+        // console.log('index', index);
+        // console.log('forecastData', forecastData);
+        // console.log('returnData', returnData);
+        // console.log('returnData.weather_data', returnData.weather_data[index]);
+        // console.log('returnData.weather_data.forecast', returnData.weather_data[index].forecast);
+
+        if(data.forecast.length - 1 === index) {
+          return res.send(returnData);
+        }
+
+      });
     });
+    
+    
+
+    // forecast(data.forecast[0], (error, forecastData) => {
+    //   if(error) { 
+    //     console.log(error);
+    //     return res.send({ error });  
+    //   }
+    //   res.send ({ 
+    //     attribution: data.attribution,
+    //     address,
+    //     weather_data:
+    //     [{
+    //       location: data.forecast.location,
+    //       forecast: {
+    //         weather_descriptions: forecastData.weather_descriptions,
+    //         temperature: forecastData.temperature,
+    //         feelslike: forecastData.feelslike,
+    //         weather_icons: forecastData.weather_icons,
+    //         humidity: forecastData.humidity,
+    //         cloudcover: forecastData.cloudcover,
+    //         wind_speed: forecastData.wind_speed,
+    //         visibility: forecastData.visibility
+    //       }
+    //     }]
+    //   });
+    // });
   });
+});
+
+app.get('/more-weather', (req, res) => {
+  res.render(
+    'more-weather', 
+    {
+      title: 'More Weather',
+      header: 'Matching Locations',
+      name: 'Gaurav Mendse | Andrew Mead | Complete Nodejs Developer Course | Udemy'
+    }
+  );
 });
 
 app.get('/help/*', (req, res) => {
@@ -119,3 +177,5 @@ app.get('*', (req, res) => {
 app.listen(process.env.PORT, err => {
   console.log(`Server is up on port ${process.env.PORT}`);
 });
+
+

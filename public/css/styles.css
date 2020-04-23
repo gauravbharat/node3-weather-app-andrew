@@ -78,6 +78,11 @@ form button {
   padding-left: 10px;
   letter-spacing: 1px;
   text-align: justify;
+
+}
+
+.forecast__data__location {
+  margin-top: 5px;
 }
 
 .forecast__data__info {
@@ -112,4 +117,11 @@ form button {
 .row a:hover,
 .row a:active {
   color: #ccc;
+}
+
+.attribution {
+  margin-top: 20px;  
+  color: #b9b5b5; 
+  font-size: small;
+  text-align: justify;
 }
