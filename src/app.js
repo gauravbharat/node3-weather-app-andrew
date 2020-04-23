@@ -1,3 +1,4 @@
+require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const hbs = require('hbs');
@@ -7,8 +8,8 @@ const forecast = require('./utils/forecast');
 const lc = require('./utils/logcolors');
 
 const app = express();
-const port = process.env.PORT || 3000;
-const IP = process.env.IP || 'localhost';
+// const port = process.env.PORT || 3000;
+// const IP = process.env.IP || 'localhost';
 
 const publicDirPath = path.join(__dirname, '../public');
 const viewsPath = path.join(__dirname, '../templates/views');
@@ -115,6 +116,6 @@ app.get('*', (req, res) => {
   res.render('404', {error: 'Page not found.'});
 });
 
-app.listen(port, err => {
-  console.log(`Server is up on port ${port}`);
+app.listen(process.env.PORT, err => {
+  console.log(`Server is up on port ${process.env.PORT}`);
 });

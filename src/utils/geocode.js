@@ -2,7 +2,7 @@ const request = require('request');
 const lc = require('./logcolors');
 
 const geocode = (address, limit, callback) => {
-  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=pk.eyJ1IjoiZ2FyeWRzYSIsImEiOiJjazk5cGNhNmwwNXd3M2RucmV6c2lvMndxIn0.JODx4FouHrzD0YKeHz6pkw&limit=${limit}`;
+  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${process.env.MAPBOX_ACCESS_TOKEN}&limit=${limit}`;
 
   request({url, json: true}, (error, response) => {
     let errorString;

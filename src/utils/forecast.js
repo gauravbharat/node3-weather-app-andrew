@@ -3,7 +3,7 @@ const lc = require('./logcolors');
 
 // setting default as empty object to the destructured object parameter
 const forecast = ({latitude, longitude} = {}, callback) => {
-  const url = `http://api.weatherstack.com/current?access_key=9d5fd484e5fc8ca13899e1393708674d&query=${latitude},${longitude}`;
+  const url = `http://api.weatherstack.com/current?access_key=${process.env.WEATHERSTACK_ACCESS_KEY}&query=${latitude},${longitude}`;
   
   request({url, json: true}, (error, response) => {
     let errorString;
