@@ -111,6 +111,6 @@ app.get('*', (req, res) => {
   res.render('404', {error: 'Page not found.'});
 });
 
-app.listen(port, IP, err => {
-  console.log(`Server is up on port ${port} and IP ${IP}...`);
+app.listen(port, err => {
+  console.log(`Server is up on port ${port}`);
 });
