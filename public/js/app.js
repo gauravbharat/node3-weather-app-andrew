@@ -1,4 +1,4 @@
-console.log('Client-side javascript file loaded!');
+// console.log('Client-side javascript file loaded!');
 
 // fetch can't be used on server-side, nodejs js files. However, we are using it here since this is a client-side js file
 
@@ -31,7 +31,7 @@ weatherForm.addEventListener('submit', (e) => {
 
   e.preventDefault();
   const location = search.value;
-  console.log(location);
+  // console.log(location);
 
   button.textContent = 'Loading...';
   button.disabled = true;
@@ -39,7 +39,7 @@ weatherForm.addEventListener('submit', (e) => {
   fetch(`/weather?address=${location}`).then(res => {
     res.json().then(data => {
       if(data.error) {
-        console.log(data.error);
+        // console.log(data.error);
         let showHTML = `
           <div class="forecast__error">
             <p>${data.error}</p>

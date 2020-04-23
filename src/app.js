@@ -28,7 +28,7 @@ hbs.registerPartials(partialsPath);
 Direct express to serve the absolute public folder path */
 app.use(express.static(publicDirPath));
 
-app.get('/', (req, res) => {
+app.get('', (req, res) => {
   res.render(
     'index', 
     {
