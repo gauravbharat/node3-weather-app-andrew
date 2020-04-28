@@ -1,57 +1,54 @@
-const request = require('request');
+// const request = require('request');
+const axios = require('axios');
 const lc = require('./logcolors');
 
-const geocode = (address, limit, callback) => {
+
+const geocode = async (address, limit) => {
   const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${process.env.MAPBOX_ACCESS_TOKEN}&limit=${limit}`;
+  let errorString;
 
-  request({url, json: true}, (error, response) => {
-    let errorString;
-    // Low level error
-    if(error) {
-      console.log(lc.errorColor(error));
-      errorString = `
-        ${lc.errorColor('Unable to connect to location services!')}
-        ${lc.errorColorBG('Code:')} ${lc.errorColorBG(error.code)}
-        ${lc.errorColor('Error:')} ${lc.errorColor(error.Error)}
-      `;
+  try {
+    let response = await axios(url);  
 
-      callback(errorString, undefined);
-
-    // Search error 
-    } else if(!response.body.features || response.body.features.length === 0) {
-
-      errorString = `${lc.errorColor('Unable to find location. Try another search.')}`;
-      if(response.body.search && response.body.search('<H1>400 ERROR</H1>') > 0) {
-        errorString += `
-        ${lc.errorColorBG(`*** RETURN ERROR ***`)}
-        ${lc.errorColor(`Code: 400 ERROR`)}
-        ${lc.errorColor(`Info: Bad request. The request could not be satisfied.`)}
-        `;
-      }  
-
-      callback(errorString, undefined);
-
-    // Success
-    } else {
-
-      let attribution = response.body.attribution;
-
-      let returnData = {
-        attribution,
-        forecast: []
-      };
-      
-      response.body.features.forEach( record => {
-        returnData.forecast.push({
-          latitude: record.center[1],
-          longitude: record.center[0],
-          location: record.place_name
-        });
+    if(!response.data.features || response.data.features.length === 0) {
+      return new Promise((response, reject) => {
+        errorString = 'Unable to find location. Try another search.';
+        console.log(`${lc.errorColor(errorString)}`);
+        reject(errorString);
       });
+    } 
 
-      callback(undefined, returnData);
-    }
-  });
-};
+    let attribution = response.data.attribution;
+
+    let returnData = {
+      attribution,
+      forecast: []
+    };
+    
+    await response.data.features.forEach( record => {
+      returnData.forecast.push({
+        latitude: record.center[1],
+        longitude: record.center[0],
+        location: record.place_name
+      });
+    });
+
+    return new Promise((resolve, reject) => {
+      resolve(returnData);
+    });
+
+  } catch (e) {
+    console.log(lc.errorColor(e));
+    return new Promise((resolve, reject) => {
+      errorString = 'Unable to connect to location services!';
+      console.log(`
+      ${lc.errorColor(errorString)}
+      ${lc.errorColorBG('Code:')} ${lc.errorColorBG(e.code)}
+      ${lc.errorColor('Error:')} ${lc.errorColor(e.Error)}`);
+
+      reject(errorString);  
+    });
+  }
+};  
 
 module.exports = geocode;

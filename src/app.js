@@ -65,94 +65,7 @@ app.get('/help', (req, res) => {
 
 
 app.get('/weather', (req, res) => {
-  if(!req.query.address && req.query.address.length > 0) {
-    return res.send({
-      error: 'You must provide an address'
-    });
-  }
-
-  const address = req.query.address;
-  const recordLimit = (req.query.limit) ? req.query.limit : 1;
-
-  console.log('address', address);
-
-  geocode(address, recordLimit, (error, data) => {
-    if(error) { 
-      console.log(error); 
-      return res.send({ error }); 
-    }
-    
-    // console.log('mapbox data', data);
-
-    let returnData = {
-      attribution: data.attribution,
-      address,
-      weather_data: []
-    };
-
-    // console.log('data.forecast.length', data.forecast.length);
-
-    data.forecast.forEach((record, index) => {
-      forecast(record, (error, forecastData) => {
-        if(error) { 
-          console.log(error);
-          return res.send({ error });  
-        }
-
-        returnData.weather_data.push({
-          location: record.location,
-          forecast: {
-            weather_descriptions: forecastData.weather_descriptions,
-            temperature: forecastData.temperature,
-            feelslike: forecastData.feelslike,
-            weather_icons: forecastData.weather_icons,
-            humidity: forecastData.humidity,
-            cloudcover: forecastData.cloudcover,
-            wind_speed: forecastData.wind_speed,
-            visibility: forecastData.visibility
-          }
-        });
-
-        // console.log('index', index);
-        // console.log('forecastData', forecastData);
-        // console.log('returnData', returnData);
-        // console.log('returnData.weather_data', returnData.weather_data[index]);
-        // console.log('returnData.weather_data.forecast', returnData.weather_data[index].forecast);
-
-        if(data.forecast.length - 1 === index) {
-          return res.send(returnData);
-        }
-
-      });
-    });
-    
-    
-
-    // forecast(data.forecast[0], (error, forecastData) => {
-    //   if(error) { 
-    //     console.log(error);
-    //     return res.send({ error });  
-    //   }
-    //   res.send ({ 
-    //     attribution: data.attribution,
-    //     address,
-    //     weather_data:
-    //     [{
-    //       location: data.forecast.location,
-    //       forecast: {
-    //         weather_descriptions: forecastData.weather_descriptions,
-    //         temperature: forecastData.temperature,
-    //         feelslike: forecastData.feelslike,
-    //         weather_icons: forecastData.weather_icons,
-    //         humidity: forecastData.humidity,
-    //         cloudcover: forecastData.cloudcover,
-    //         wind_speed: forecastData.wind_speed,
-    //         visibility: forecastData.visibility
-    //       }
-    //     }]
-    //   });
-    // });
-  });
+  getWeatherData(req, res);
 });
 
 app.get('/more-weather', (req, res) => {
@@ -179,3 +92,54 @@ app.listen(process.env.PORT, err => {
 });
 
 
+async function getWeatherData(req, res) {
+  // console.log(req.query);
+  if(!req.query.address || !req.query.address.trim().length > 0) {
+    // console.log(req.query.address);
+    return res.send({
+      e: 'You must provide an address'
+    });
+  }
+
+  const address = req.query.address;
+  const recordLimit = (req.query.limit) ? req.query.limit : 1;
+
+  console.log('address', address);
+
+  try {
+    const data = await geocode(address, recordLimit);
+    
+    
+    let returnData = {
+      attribution: data.attribution,
+      address,
+      weather_data: []
+    };
+  
+    let forecastData;
+
+    for(let i = 0; i < data.forecast.length; i++) {  
+      forecastData = await forecast(data.forecast[i]);  
+
+      await returnData.weather_data.push({
+        location: data.forecast[i].location,
+        forecast: {
+          weather_descriptions: forecastData.weather_descriptions,
+          temperature: forecastData.temperature,
+          feelslike: forecastData.feelslike,
+          weather_icons: forecastData.weather_icons,
+          humidity: forecastData.humidity,
+          cloudcover: forecastData.cloudcover,
+          wind_speed: forecastData.wind_speed,
+          visibility: forecastData.visibility
+        }  
+      });
+    }  
+
+    return res.send(returnData);
+
+  } catch (e) {
+    console.log(e); 
+    return res.send({ e }); 
+  }
+}
